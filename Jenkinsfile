@@ -26,6 +26,7 @@ pipeline {
         string(defaultValue: "${env.admin1cPwd}", description: 'Пароль администратора базы тестирования 1C. Должен быть одинаковым для всех баз', name: 'admin1cPwd')
         string(defaultValue: "${env.sqlUser}", description: 'Имя администратора сервера MS SQL. Если пустой, то используется доменная  авторизация', name: 'sqlUser')
         string(defaultValue: "${env.sqlPwd}", description: 'Пароль администратора MS SQL.  Если пустой, то используется доменная  авторизация', name: 'sqlPwd')
+        string(defaultValue: "${env.sqlWorkSpace}", description: 'Рабочай папка на SQL сервере.  Если пустой, то используется рабочай папка агента', name: 'sqlWorkSpace')        
         string(defaultValue: "${env.templatebases}", description: 'Список баз для тестирования через запятую. Например work_erp,work_upp', name: 'templatebases')
         string(defaultValue: "${env.storages1cPath}", description: 'Необязательный. Пути к хранилищам 1С для обновления копий баз тестирования через запятую. Число хранилищ (если указаны), должно соответствовать числу баз тестирования. Например D:/temp/storage1c/erp,D:/temp/storage1c/upp', name: 'storages1cPath')
         string(defaultValue: "${env.storageUser}", description: 'Необязательный. Администратор хранилищ  1C. Должен быть одинаковым для всех хранилищ', name: 'storageUser')
@@ -56,6 +57,7 @@ pipeline {
                         server1cPort = server1cPort.isEmpty() ? "1540" : server1cPort
                         agent1cPort = agent1cPort.isEmpty() ? "1541" : agent1cPort
                         env.sqlUser = sqlUser.isEmpty() ? "sa" : sqlUser
+                        env.sqlWorkSpace = env.sqlWorkSpace.isEmpty() ? env.WORKSPACE : env.sqlWorkSpace                        
                         testbase = null
 
                         // создаем пустые каталоги
@@ -76,7 +78,7 @@ pipeline {
                             storage1cPath = storages1cPathList[i]
                             testbase = "test_${templateDb}"
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
-                            backupPath = "${env.WORKSPACE}/build/temp_${templateDb}_${utils.currentDateStamp()}"
+                            backupPath = "${env.sqlWorkSpace}/build/temp_${templateDb}_${utils.currentDateStamp()}"
 
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
                             dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
