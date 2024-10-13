@@ -82,7 +82,7 @@ pipeline {
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupPath = "${env.sqlWorkSpace}/build/temp_${templateDb}_${utils.currentDateStamp()}"
 
-                            if createDataBase {
+                            if (createDataBase) {
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
                             dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
                                 server1c, 
