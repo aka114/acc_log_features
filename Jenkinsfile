@@ -17,6 +17,7 @@ def updateDbTasks = [:]
 pipeline {
 
     parameters {
+        boolean(defaultValue: false, description: 'Создать копию ИБ перед тестированием', name: 'createDataBase')
         string(defaultValue: "${env.jenkinsAgent}", description: 'Нода дженкинса, на которой запускать пайплайн. По умолчанию master', name: 'jenkinsAgent')
         string(defaultValue: "${env.server1c}", description: 'Имя сервера 1с, по умолчанию localhost', name: 'server1c')
         string(defaultValue: "${env.server1cPort}", description: 'Порт рабочего сервера 1с. По умолчанию 1540. Не путать с портом агента кластера (1541)', name: 'server1cPort')
@@ -81,6 +82,7 @@ pipeline {
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupPath = "${env.sqlWorkSpace}/build/temp_${templateDb}_${utils.currentDateStamp()}"
 
+                            if createDataBase {
                             // 1. Удаляем тестовую базу из кластера (если он там была) и очищаем клиентский кеш 1с
                             dropDbTasks["dropDbTask_${testbase}"] = dropDbTask(
                                 server1c, 
@@ -140,6 +142,7 @@ pipeline {
                                 testbaseConnString
                             )
                         }
+                        }    
 
                         parallel dropDbTasks
                         parallel backupTasks
