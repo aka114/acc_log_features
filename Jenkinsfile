@@ -70,10 +70,8 @@ pipeline {
                 }
             }
         }
+        when {createDataBase == true)}
         stage("Запуск") {
-            when {
-                (createDataBase == true)
-            }
             steps {
                 timestamps {
                     script {
