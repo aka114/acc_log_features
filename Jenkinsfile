@@ -107,6 +107,10 @@ pipeline {
                                 sqlUser,
                                 sqlPwd
                             )
+                            // 3.5 Удаляем файл бэкапа
+                            restoreTasks["deleteBckpFile_${testbase}"] = deleteFile(
+                                backupPath
+                            )                            
                             // 4. Создаем тестовую базу кластере 1С
                             createDbTasks["createDbTask_${testbase}"] = createDbTask(
                                 "${server1c}:${agent1cPort}",
@@ -247,6 +251,20 @@ def restoreTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
 
                 sqlUtils.createEmptyDb(serverSql, infobase, sqlUser, sqlPwd)
                 sqlUtils.restoreDb(serverSql, infobase, backupPath, sqlUser, sqlPwd)
+            }
+        }
+    }
+}
+
+def deleteFile(file) {
+    return {
+        stage("Удаление файла ${file}") {
+            timestamps {
+                try {                
+                utils.cmd("oscript one_script_tools/deleteFile.os -file ${file})
+                } catch (excp) {
+                    echo "Error happened when deleting file ${file}"
+                }    
             }
         }
     }
