@@ -264,7 +264,6 @@ def deleteFile(file) {
                 utils.cmd("oscript one_script_tools/deleteFile.os -file ${file}")
                 } catch (excp) {
                     echo "Error happened when deleting file ${file}"
-                    }
                 }    
             }
         }
