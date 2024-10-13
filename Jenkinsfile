@@ -261,7 +261,7 @@ def deleteFile(file) {
         stage("Удаление файла ${file}") {
             timestamps {
                 try {                
-                utils.cmd("oscript one_script_tools/deleteFile.os -file ${file})
+                utils.cmd("oscript one_script_tools/deleteFile.os -file ${file}")
                 } catch (excp) {
                     echo "Error happened when deleting file ${file}"
                     }
