@@ -72,7 +72,7 @@ pipeline {
         }
         stage("Запуск") {
             when {
-                createDataBase
+                createDataBase == true
             }
             steps {
                 timestamps {
