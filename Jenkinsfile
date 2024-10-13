@@ -8,6 +8,7 @@ def utils = new Utils()
 def projectHelpers = new ProjectHelpers()
 def backupTasks = [:]
 def restoreTasks = [:]
+def deleteFileTasks = [:]
 def dropDbTasks = [:]
 def createDbTasks = [:]
 def runHandlers1cTasks = [:]
@@ -107,11 +108,11 @@ pipeline {
                                 sqlUser,
                                 sqlPwd
                             )
-                            // 3.5 Удаляем файл бэкапа
-                            restoreTasks["deleteBckpFile_${testbase}"] = deleteFile(
+                            // 4. Удаляем файл бэкапа
+                            deleteFileTasks["deleteBckpFile_${testbase}"] = deleteFileTasks(
                                 backupPath
                             )                            
-                            // 4. Создаем тестовую базу кластере 1С
+                            // 5. Создаем тестовую базу кластере 1С
                             createDbTasks["createDbTask_${testbase}"] = createDbTask(
                                 "${server1c}:${agent1cPort}",
                                 serverSql,
@@ -120,7 +121,7 @@ pipeline {
                                 sqlUser,
                                 sqlPwd
                             )
-                            // 5. Обновляем тестовую базу из хранилища 1С (если применимо)
+                            // 6. Обновляем тестовую базу из хранилища 1С (если применимо)
                             updateDbTasks["updateTask_${testbase}"] = updateDbTask(
                                 platform1c,
                                 testbase, 
@@ -131,7 +132,7 @@ pipeline {
                                 admin1cUser, 
                                 admin1cPwd
                             )
-                            // 6. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
+                            // 7. Запускаем внешнюю обработку 1С, которая очищает базу от всплывающего окна с тем, что база перемещена при старте 1С
                             runHandlers1cTasks["runHandlers1cTask_${testbase}"] = runHandlers1cTask(
                                 testbase, 
                                 admin1cUser, 
@@ -256,7 +257,7 @@ def restoreTask(serverSql, infobase, backupPath, sqlUser, sqlPwd) {
     }
 }
 
-def deleteFile(file) {
+def deleteFileTasks(file) {
     return {
         stage("Удаление файла ${file}") {
             timestamps {
