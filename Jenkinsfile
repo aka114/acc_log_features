@@ -72,7 +72,9 @@ pipeline {
         }
         
         stage("Запуск") {
-            if (createDataBase == true) {
+            when {
+                expression {createDataBase == true}
+            }
             steps {
                 timestamps {
                     script {
@@ -154,7 +156,6 @@ pipeline {
                     }
                 }
             }
-        }
         }
         stage("Тестирование ADD") {
             steps {
