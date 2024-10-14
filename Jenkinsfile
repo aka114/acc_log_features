@@ -17,7 +17,7 @@ def updateDbTasks = [:]
 pipeline {
 
     parameters {
-        booleanParam(defaultValue: false, description: 'Создать копию ИБ перед тестированием', name: 'createDataBase')
+        //booleanParam(defaultValue: false, description: 'Создать копию ИБ перед тестированием', name: 'createDataBase')
         string(defaultValue: "${env.jenkinsAgent}", description: 'Нода дженкинса, на которой запускать пайплайн. По умолчанию master', name: 'jenkinsAgent')
         string(defaultValue: "${env.server1c}", description: 'Имя сервера 1с, по умолчанию localhost', name: 'server1c')
         string(defaultValue: "${env.server1cPort}", description: 'Порт рабочего сервера 1с. По умолчанию 1540. Не путать с портом агента кластера (1541)', name: 'server1cPort')
@@ -45,7 +45,7 @@ pipeline {
     stages {
         stage("Подготовка") {
             steps {
-                echo "createDataBase_${createDataBase}"
+                //echo "createDataBase_${createDataBase}"
                 timestamps {
                     script {
                         templatebasesList = utils.lineToArray(templatebases.toLowerCase())
@@ -73,9 +73,9 @@ pipeline {
         }
         
         stage("Запуск") {
-            when {
-                expression {createDataBase}
-            }
+            //when {
+            //    expression {createDataBase}
+            //}
             steps {
                 timestamps {
                     script {
