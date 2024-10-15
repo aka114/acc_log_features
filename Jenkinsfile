@@ -74,7 +74,7 @@ pipeline {
         
         stage("Запуск") {
             when {
-                expression {createDataBase}
+                expression {createDataBase==true}
             }
             steps {
                 timestamps {
