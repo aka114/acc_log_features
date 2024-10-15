@@ -150,7 +150,7 @@ pipeline {
                         parallel dropDbTasks
                         parallel backupTasks
                         parallel restoreTasks
-                        parallel deleteFileTasks
+                        //parallel deleteFileTasks
                         parallel createDbTasks
                         parallel updateDbTasks
                         parallel runHandlers1cTasks
@@ -164,6 +164,7 @@ pipeline {
                     script {
 
                         if (templatebasesList.size() == 0) {
+                            echo 'return..'
                             return
                         }
 
