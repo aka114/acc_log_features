@@ -73,9 +73,9 @@ pipeline {
         }
         
         stage("Запуск") {
-            //when {
-            //    expression {createDataBase}
-            //}
+            when {
+                expression {createDataBase}
+            }
             steps {
                 timestamps {
                     script {
@@ -115,9 +115,9 @@ pipeline {
                                 sqlPwd
                             )
                             // 4. Удаляем файл бэкапа
-                            deleteFileTasks["deleteBckpFile_${testbase}"] = deleteFileTasks(
-                                backupPath
-                            )                            
+                            //deleteFileTasks["deleteBckpFile_${testbase}"] = deleteFileTasks(
+                            //    backupPath
+                            //)                            
                             // 5. Создаем тестовую базу кластере 1С
                             createDbTasks["createDbTask_${testbase}"] = createDbTask(
                                 "${server1c}:${agent1cPort}",
