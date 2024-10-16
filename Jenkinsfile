@@ -164,10 +164,10 @@ pipeline {
                     script {
 
                         if (templatebasesList.size() == 0) {
-                            echo 'return..'
                             return
                         }
-
+                        echo 'return..'
+                        
                         platform1cLine = ""
                         if (platform1c != null && !platform1c.isEmpty()) {
                             platform1cLine = "--v8version ${platform1c}"
