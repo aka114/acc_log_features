@@ -166,7 +166,6 @@ pipeline {
                         if (templatebasesList.size() == 0) {
                             return
                         }
-                        echo 'return..'
                         
                         platform1cLine = ""
                         if (platform1c != null && !platform1c.isEmpty()) {
@@ -184,7 +183,8 @@ pipeline {
                         }
                         // Запускаем ADD тестирование на произвольной базе, сохранившейся в переменной testbaseConnString
                         returnCode = utils.cmd("runner vanessa --settings tools/vrunner.json ${platform1cLine} --ibconnection \"${testbaseConnString}\" ${admin1cUsrLine} ${admin1cPwdLine} --pathvanessa tools/add/bddRunner.epf")
-
+                        echo returnCode
+                        
                         if (returnCode != 0) {
                             utils.raiseError("Возникла ошибка при запуске ADD на сервере ${server1c} и базе ${testbase}")
                         }
