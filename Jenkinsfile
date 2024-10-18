@@ -67,6 +67,10 @@ pipeline {
                         dir ('build') {
                             writeFile file:'dummy', text:''
                         }
+                        templateDb = templatebasesList[0]
+                        storage1cPath = storages1cPathList[0]
+                        testbase = "test_${templateDb}"
+                        testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                     }
                 }
             }
@@ -79,11 +83,6 @@ pipeline {
             steps {
                 timestamps {
                     script {
-
-                        for (i = 0;  i < templatebasesList.size(); i++) {
-                            templateDb = templatebasesList[i]
-                            storage1cPath = storages1cPathList[i]
-                            testbase = "test_${templateDb}"
                             testbaseConnString = projectHelpers.getConnString(server1c, testbase, agent1cPort)
                             backupPath = "${env.sqlWorkSpace}/build/temp_${templateDb}_${utils.currentDateStamp()}"
 
@@ -154,7 +153,6 @@ pipeline {
                         parallel createDbTasks
                         parallel updateDbTasks
                         parallel runHandlers1cTasks
-                    }
                 }
             }
         }
