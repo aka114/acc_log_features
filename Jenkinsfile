@@ -143,8 +143,7 @@ pipeline {
                                 admin1cUser, 
                                 admin1cPwd,
                                 testbaseConnString
-                            )
-                        }   
+                            )  
 
                         parallel dropDbTasks
                         parallel backupTasks
@@ -153,6 +152,7 @@ pipeline {
                         parallel createDbTasks
                         parallel updateDbTasks
                         parallel runHandlers1cTasks
+                    }
                 }
             }
         }
